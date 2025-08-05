@@ -38,7 +38,7 @@ Some of the technologies I’ll be using throughout this journey include:
 
 I'm always open to connect, collaborate, or receive feedback!
 
-- LinkedIn: [Ani Chinecherem](https://linkedin.com/in/ani chinecherem)
+- LinkedIn: [Ani Chinecherem](https://linkedin.com/in/ani-chinecherem)
 - GitHub: [@dimani001](https://github.com/dimani001)
 - Email: chidimma516@gmail.com
 
