@@ -17,9 +17,12 @@ LAMP is one of the best choices for web development due to its **reliability**, 
 To implement this project, the following were used:
 
 - **AWS EC2 Ubuntu 24.04 LTS instance**
+  <img width="1905" height="789" alt="AWS INSTANCE (LAMP)" src="https://github.com/user-attachments/assets/700c2845-93fd-4ca8-85a5-4498659643bd" />
 - **Security Group**: `steghub-SG` with inbound rules allowing:
   . **22 (SSH)** for secure terminal access
   . **80 (HTTP)** for web traffic
+  <img width="1905" height="789" alt="SecurityGroup (LAMP)" src="https://github.com/user-attachments/assets/bfb45ff4-3897-40e5-9286-fa071dc1dca8" />
+
 - **Key Pair**: `steghub.pem` private key for SSH authentication
 - **Visual Studio Code (VSCode)**- for SSH access and code editing
 - **GitHub**- for storing and documenting the project
@@ -37,21 +40,24 @@ chmod 400 steghub.pem
 # This sets the private key file permission to read-only for the user, preventing unauthorized access.
 
 ssh -i steghub.pem ubuntu@16.170.238.160
+<img width="1920" height="1080" alt="SSH'D into server" src="https://github.com/user-attachments/assets/c3651e3f-1d64-4d72-9de3-35e425b23734" />
 
 sudo apt update && sudo apt upgrade
 # This updates package list and upgrades outdated packages to ensure system stability and security.
 
 # Update & Install Apache
-
 sudo apt install apache2
 # Installs Apache, the web server that handles HTTP requests and serves web pages.
+<img width="1920" height="1080" alt="apache installed" src="https://github.com/user-attachments/assets/be1d25fb-16a0-4f71-8bc4-c61919efe24a" />
 
 sudo systemctl status apache2
 # Checks the status of the Apache service to confirm it is running.
+<img width="1920" height="1080" alt="apache server running" src="https://github.com/user-attachments/assets/34d2670e-d420-44a2-8e09-4e806e5dbef8" />
 
 curl http://localhost:80
 # Tests if the Apache server is serving content locally via port 80.
 ```
+<img width="1920" height="1080" alt="curl  localhost" src="https://github.com/user-attachments/assets/d02c11f9-6ccc-4527-835e-12676ab20067" />
 
 Browser Check (Apache Test Page):
 ```bash
@@ -59,6 +65,7 @@ In Browser: http://<Your-Public-IP>
 Example: http://16.170.238.160
 Expected Result: Default Apache Ubuntu landing page.
 ```
+
 # Another means to Get Public IP Address
 ```bash
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
