@@ -40,7 +40,8 @@ chmod 400 steghub.pem
 # This sets the private key file permission to read-only for the user, preventing unauthorized access.
 
 ssh -i steghub.pem ubuntu@16.170.238.160
-<img width="1920" height="1080" alt="SSH'D into server" src="https://github.com/user-attachments/assets/c3651e3f-1d64-4d72-9de3-35e425b23734" />
+<img width="1920" height="1080" alt="SSH'D into server" src="https://github.com/user-attachments/assets/e2488920-3020-4b21-9846-00278c038a72" />
+
 
 sudo apt update && sudo apt upgrade
 # This updates package list and upgrades outdated packages to ensure system stability and security.
@@ -48,11 +49,13 @@ sudo apt update && sudo apt upgrade
 # Update & Install Apache
 sudo apt install apache2
 # Installs Apache, the web server that handles HTTP requests and serves web pages.
-<img width="1920" height="1080" alt="apache installed" src="https://github.com/user-attachments/assets/be1d25fb-16a0-4f71-8bc4-c61919efe24a" />
+<img width="1920" height="1080" alt="apache installed" src="https://github.com/user-attachments/assets/b21fc0aa-587d-43b0-bbd2-3284e4ca8248" />
+
 
 sudo systemctl status apache2
 # Checks the status of the Apache service to confirm it is running.
-<img width="1920" height="1080" alt="apache server running" src="https://github.com/user-attachments/assets/34d2670e-d420-44a2-8e09-4e806e5dbef8" />
+<img width="1920" height="1080" alt="apache server running" src="https://github.com/user-attachments/assets/d2ebd078-21df-461f-a564-ffa57c3f380f" />
+
 
 curl http://localhost:80
 # Tests if the Apache server is serving content locally via port 80.
@@ -65,6 +68,7 @@ In Browser: http://<Your-Public-IP>
 Example: http://16.170.238.160
 Expected Result: Default Apache Ubuntu landing page.
 ```
+<img width="1905" height="2013" alt="Apache2-Ubuntu-Default-Page-It-works-08-06-2025_09_11_PM" src="https://github.com/user-attachments/assets/361ba041-1b84-4165-b2f1-76f1b7476707" />
 
 # Another means to Get Public IP Address
 ```bash
@@ -75,6 +79,8 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" \
 http://169.254.169.254/latest/meta-data/public-ipv4
 # Retrieves the public IP of the EC2 instance using IMDSv2, enhancing metadata access security.
 ```
+<img width="1920" height="1080" alt="curl  localhost" src="https://github.com/user-attachments/assets/3b93fbbb-cecb-4436-8764-f33a18c2f2c5" />
+
 # To Install MySql(Database)
 ```bash
 sudo apt install mysql-server
@@ -166,6 +172,7 @@ Expected Result:
 ```bash
 Hello LAMP from <hostname> with public IP <your-ip>
 ```
+
 Prioritize PHP Files
 ```bash
 sudo vim /etc/apache2/mods-enabled/dir.conf
