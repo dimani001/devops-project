@@ -35,28 +35,34 @@ To implement this project, the following were used:
 
 ```bash
 cd /c/Users/H.P\\.I5\\8TH\\GEN/Downloads/
-
+```
+```bash
 chmod 400 steghub.pem
 # This sets the private key file permission to read-only for the user, preventing unauthorized access.
-
+```
+```bash
 ssh -i steghub.pem ubuntu@16.170.238.160
+```
 <img width="1920" height="1080" alt="SSH'D into server" src="https://github.com/user-attachments/assets/e2488920-3020-4b21-9846-00278c038a72" />
 
-
+```bash
 sudo apt update && sudo apt upgrade
 # This updates package list and upgrades outdated packages to ensure system stability and security.
-
+```
 # Update & Install Apache
+```bash
 sudo apt install apache2
 # Installs Apache, the web server that handles HTTP requests and serves web pages.
+```
 <img width="1920" height="1080" alt="apache installed" src="https://github.com/user-attachments/assets/b21fc0aa-587d-43b0-bbd2-3284e4ca8248" />
 
-
+```bash
 sudo systemctl status apache2
 # Checks the status of the Apache service to confirm it is running.
+```
 <img width="1920" height="1080" alt="apache server running" src="https://github.com/user-attachments/assets/d2ebd078-21df-461f-a564-ffa57c3f380f" />
 
-
+```bash
 curl http://localhost:80
 # Tests if the Apache server is serving content locally via port 80.
 ```
@@ -81,16 +87,19 @@ http://169.254.169.254/latest/meta-data/public-ipv4
 ```
 <img width="1920" height="1080" alt="IP address retrieval" src="https://github.com/user-attachments/assets/a19ae9c1-9a14-461c-8aa8-b7aa62e95ee8" />
 
-
 # To Install MySql(Database)
 ```bash
 sudo apt install mysql-server
+```
 <img width="1920" height="1080" alt="mysql installed" src="https://github.com/user-attachments/assets/017d0b64-6569-4a29-9b53-5ff5735b5ed7" />
 
+```bash
 sudo mysql
+```
 <img width="1920" height="1080" alt="Screenshot (337)" src="https://github.com/user-attachments/assets/b7ac7928-be1f-4595-9737-2302d5f53738" />
 
 Inside the MySQL prompt:
+```mysql
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Password.1';
 
 mysql> exit
@@ -158,11 +167,15 @@ Paste:
 ErrorLog ${APACHE_LOG_DIR}/error.log
 CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+```
 <img width="1920" height="1080" alt="Screenshot (342)" src="https://github.com/user-attachments/assets/09cf811b-d76c-4f4c-b347-0cc7a8b3c5e4" />
 
+```bash
 sudo ls /etc/apache2/sites-available
+```
 <img width="1920" height="1080" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/4d3092da-fab8-4ad5-8786-4a7a0f056bb2" />
 
+```bash
 sudo a2ensite lampstack.conf
 
 sudo a2dissite 000-default.conf
@@ -186,6 +199,7 @@ Expected Result:
 ```bash
 Hello LAMP from <hostname> with public IP <your-ip>
 ```
+<img width="1905" height="789" alt="LAMP (Apache reloaded)" src="https://github.com/user-attachments/assets/8c443a9a-3466-441f-aba0-7dfa47bb6721" />
 
 Prioritize PHP Files
 ```bash
