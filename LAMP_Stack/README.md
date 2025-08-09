@@ -79,13 +79,16 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" \
 http://169.254.169.254/latest/meta-data/public-ipv4
 # Retrieves the public IP of the EC2 instance using IMDSv2, enhancing metadata access security.
 ```
-<img width="1920" height="1080" alt="curl  localhost" src="https://github.com/user-attachments/assets/3b93fbbb-cecb-4436-8764-f33a18c2f2c5" />
+<img width="1920" height="1080" alt="IP address retrieval" src="https://github.com/user-attachments/assets/a19ae9c1-9a14-461c-8aa8-b7aa62e95ee8" />
+
 
 # To Install MySql(Database)
 ```bash
 sudo apt install mysql-server
+<img width="1920" height="1080" alt="mysql installed" src="https://github.com/user-attachments/assets/017d0b64-6569-4a29-9b53-5ff5735b5ed7" />
 
 sudo mysql
+<img width="1920" height="1080" alt="Screenshot (337)" src="https://github.com/user-attachments/assets/b7ac7928-be1f-4595-9737-2302d5f53738" />
 
 Inside the MySQL prompt:
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Password.1';
@@ -114,6 +117,8 @@ Disallow root login remotely? (Press y|Y for Yes, any other key for No):  **Y**
 Remove test database and access to it? (Press y|Y for Yes, any other key for No):  **Y**
 Reload privilege tables now? (Press y|Y for Yes, any other key for No):  **Y**
 ```
+<img width="1920" height="1080" alt="Screenshot (338)" src="https://github.com/user-attachments/assets/a6fdb9b8-4e0e-40b7-a01c-d46a52e6495e" />
+<img width="1920" height="1080" alt="Screenshot (339)" src="https://github.com/user-attachments/assets/a027e8d7-5857-4405-9368-7b4e7876e50e" />
 
 ```bash
 sudo apt install php libapache2-mod-php php-mysql
@@ -122,6 +127,8 @@ sudo apt install php libapache2-mod-php php-mysql
 php -v
 # Verifies PHP installation.
 ```
+<img width="1920" height="1080" alt="Screenshot (340)" src="https://github.com/user-attachments/assets/bf689168-a7da-446f-9f49-179f28e5adb4" />
+
 Create Project Directory & Set Permissions
 ```bash
 sudo mkdir /var/www/lampstack
@@ -130,6 +137,8 @@ sudo mkdir /var/www/lampstack
 sudo chown -R $USER:$USER /var/www/lampstack
 # Transfers ownership of the project directory to the current user for easier management.
 ```
+<img width="1920" height="1080" alt="Screenshot (341)" src="https://github.com/user-attachments/assets/b8618477-8644-4134-bcd2-0eb70cb35838" />
+
 Configure Apache Virtual Host
 ```bash
 sudo vi /etc/apache2/sites-available/lampstack.conf
@@ -149,8 +158,10 @@ Paste:
 ErrorLog ${APACHE_LOG_DIR}/error.log
 CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+<img width="1920" height="1080" alt="Screenshot (342)" src="https://github.com/user-attachments/assets/09cf811b-d76c-4f4c-b347-0cc7a8b3c5e4" />
 
 sudo ls /etc/apache2/sites-available
+<img width="1920" height="1080" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/4d3092da-fab8-4ad5-8786-4a7a0f056bb2" />
 
 sudo a2ensite lampstack.conf
 
@@ -158,6 +169,8 @@ sudo a2dissite 000-default.conf
 
 sudo apache2ctl configtest
 ```
+<img width="1920" height="1080" alt="Screenshot (345)" src="https://github.com/user-attachments/assets/5febca09-0b40-47ec-ab8f-88935ac0c9e3" />
+
 Create Custom Web Page with IP Info
 ```bash
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
@@ -165,6 +178,7 @@ TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
 
 echo "<html><body><h1>Hello LAMP from $(hostname) with public IP $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)</h1></body></html>" | sudo tee /var/www/lampstack/index.html
 ```
+
 Browser Check (Custom HTML Page):
 In Browser: http://<Your-Public-IP>
 Example: http://16.170.238.160
@@ -178,6 +192,7 @@ Prioritize PHP Files
 sudo vim /etc/apache2/mods-enabled/dir.conf
 # Add index.php first in the DirectoryIndex list.
 ```
+
  Reload Apache
  ```bash
  sudo systemctl reload apache2
@@ -196,11 +211,14 @@ phpinfo();
 In Browser: http://<Your-Public-IP>
 Example: http://16.170.238.160
 Expected Result: A PHP configuration page.
+<img width="1905" height="27084" alt="PHP-8-3-6-phpinfo--08-06-2025_10_47_PM" src="https://github.com/user-attachments/assets/5175158b-8ed2-4f13-8465-e2ff15392a9d" />
 
 ```bash
 sudo rm /var/www/lampstack/index.php
 # Removes the PHP info file after verification for security reasons.
 ```
+<img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/5fd4b6dd-4b43-452e-afea-0c9a806abe5d" />
+
 
 End of LAMP Stack Setup – Fully functional with Apache, MySQL, and PHP ready for deployment.
 
