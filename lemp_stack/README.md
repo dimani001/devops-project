@@ -116,7 +116,8 @@ Secure MySQL:
 ```bash
 sudo mysql_secure_installation
 ```
-<img width="1920" height="1080" alt="Screenshot (362)" src="https://github.com/user-attachments/assets/d31d7164-c6da-4eaa-bded-031b6c96bb1b" />
+<img width="1920" height="1080" alt="Screenshot (363)" src="https://github.com/user-attachments/assets/eb57bc59-e7d5-444d-af74-3c2b00df3881" />
+
 Reason: Improves MySQL security (root password, anonymous users, test DB).
 
 * Password validation level: `1` (MEDIUM)
@@ -365,5 +366,7 @@ This documentation can now serve as a reference for future deployments or be ada
 With the LEMP stack in place, you now have a secure, scalable foundation to build upon — from adding SSL for encrypted connections to deploying more complex PHP applications and APIs.
 
 By : Ani Chinecherem Chidimma
+
 LinkedIn: linkedin.com/in/ani-chinecherem
+
 Email: chidimma516@gmail.com
