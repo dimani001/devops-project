@@ -10,13 +10,14 @@ LEMP stands for:
 
 This guide will show step-by-step how to deploy LEMP on an AWS EC2 Ubuntu 24.04 instance, with clear explanations for each command.
 
-
 ## Prerequisites
 - AWS account
 - Security group (`steghub-sg`) allowing:
   - Port 22 (SSH)
   - Port 80 (HTTP)
+  
 - EC2 instance: Ubuntu 24.04 LTS
+<img width="1866" height="765" alt="LEMP INSTANCE" src="https://github.com/user-attachments/assets/214c1463-9f34-4e53-b27b-ed535e54824c" />
 - Private key: `steghub.pem`
 - Basic familiarity with Linux commands (cd, ls, nano, etc.).
 
@@ -34,7 +35,7 @@ SSH into your EC2 instance:
 ```bash
 ssh -i steghub.pem ubuntu@16.170.224.78
 ```
-
+<img width="1920" height="1080" alt="Screenshot (353)" src="https://github.com/user-attachments/assets/0ac9c597-ab24-454e-801b-22ced22dde0d" />
 Reason: Securely connect to the EC2 instance using your private key.
 
 **Note:** We do **not** run `chmod 400 steghub.pem` here because it was already done for a previous project (LAMP). That command is only needed to restrict key permissions when first using the key.
@@ -47,7 +48,7 @@ Update system package lists:
 ```bash
 sudo apt update
 ```
-
+<img width="1920" height="1080" alt="Screenshot (354)" src="https://github.com/user-attachments/assets/6258dfd0-5ffe-4ab1-828e-1fe216a1b379" />
 Reason: Ensures Ubuntu knows the latest available versions of packages.
 
 Install Nginx:
@@ -55,6 +56,7 @@ Install Nginx:
 ```bash
 sudo apt install nginx
 ```
+<img width="1920" height="1080" alt="Screenshot (355)" src="https://github.com/user-attachments/assets/f5cae287-6cb9-44c8-bfd7-cd2b04149d5f" />
 Reason: Installs the Nginx web server.
 
 Check Nginx status:
@@ -62,6 +64,7 @@ Check Nginx status:
 ```bash
 sudo systemctl status nginx
 ```
+<img width="1920" height="1080" alt="Screenshot (356)" src="https://github.com/user-attachments/assets/76b7f7c1-b5a8-4724-ba49-054807004624" />
 
 Reason: Confirms Nginx is running after installation.
 
@@ -70,7 +73,7 @@ Test HTTP on localhost:
 ```bash
 curl http://localhost:80
 ```
-
+<img width="1920" height="1080" alt="Screenshot (357)" src="https://github.com/user-attachments/assets/d60ff515-98d3-462b-bd73-c8b611c61a26" />
 Reason: Confirms Nginx is serving locally.
 
 Test via public IP in browser:
@@ -78,10 +81,8 @@ Test via public IP in browser:
 ```
 http://16.170.224.78
 ```
-
+<img width="1920" height="1080" alt="Screenshot (358)" src="https://github.com/user-attachments/assets/9a09a5e8-1800-4122-994c-de770e58085c" />
 Reason: Confirms the site is accessible from the internet.
-
-
 
 ## Step 3 — Install MySQL
 
@@ -90,7 +91,7 @@ Install MySQL server:
 ```bash
 sudo apt install mysql-server
 ```
-
+<img width="1920" height="1080" alt="Screenshot (360)" src="https://github.com/user-attachments/assets/4e9e2061-e5e8-405f-b7f7-eec6b9944823" />
 Reason: Installs the database server.
 
 Log in as root:
@@ -98,7 +99,7 @@ Log in as root:
 ```bash
 sudo mysql
 ```
-
+<img width="1920" height="1080" alt="Screenshot (361)" src="https://github.com/user-attachments/assets/dba603cc-c8a5-44de-ab39-4804d6cfef45" />
 Reason: Opens MySQL shell as root.
 
 Set a password for MySQL root user:
@@ -107,7 +108,7 @@ Set a password for MySQL root user:
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Dimma.1';
 EXIT;
 ```
-
+<img width="1920" height="1080" alt="Screenshot (362)" src="https://github.com/user-attachments/assets/5517ec38-5d86-4371-a89a-8f1ed48788e6" />
 Reason: Changes authentication method to `mysql_native_password` for PHP compatibility.
 
 Secure MySQL:
@@ -115,7 +116,7 @@ Secure MySQL:
 ```bash
 sudo mysql_secure_installation
 ```
-
+<img width="1920" height="1080" alt="Screenshot (362)" src="https://github.com/user-attachments/assets/d31d7164-c6da-4eaa-bded-031b6c96bb1b" />
 Reason: Improves MySQL security (root password, anonymous users, test DB).
 
 * Password validation level: `1` (MEDIUM)
@@ -134,9 +135,8 @@ Reason: Improves MySQL security (root password, anonymous users, test DB).
 ```bash
 sudo apt install php-fpm php-mysql
 ```
-
+<img width="1920" height="1080" alt="Screenshot (365)" src="https://github.com/user-attachments/assets/2bf73523-b7f0-4150-ae20-d893795768d3" />
 Reason: Installs PHP processor and MySQL extension for PHP.
-
 
 ## Step 5 — Configure Nginx for PHP
 
@@ -146,7 +146,7 @@ Create project directory:
 sudo mkdir /var/www/projectLEMP
 sudo chown -R $USER:$USER /var/www/projectLEMP
 ```
-
+<img width="1920" height="1080" alt="Screenshot (366)" src="https://github.com/user-attachments/assets/557d1bfe-5ac4-4914-92a9-48b8ebfea426" />
 Reason: Sets up document root and gives current user ownership.
 
 Edit Nginx server block:
@@ -179,6 +179,7 @@ server {
     }
 }
 ```
+<img width="1920" height="1080" alt="Screenshot (368)" src="https://github.com/user-attachments/assets/5cf4d170-92fb-42ec-aee3-23a553b5e56c" />
 
 Enable config and disable default:
 
@@ -186,6 +187,7 @@ Enable config and disable default:
 sudo ln -s /etc/nginx/sites-available/projectLEMP /etc/nginx/sites-enabled/
 sudo unlink /etc/nginx/sites-enabled/default
 ```
+<img width="1920" height="1080" alt="Screenshot (369)" src="https://github.com/user-attachments/assets/2a295709-a639-4540-9057-8021a706673e" />
 
 Test syntax and reload Nginx:
 
@@ -210,7 +212,7 @@ http://169.254.169.254/latest/meta-data/public-hostname) with public IP $(TOKEN=
 curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-ipv4)" \
 > index.html'
 ```
-
+<img width="1920" height="1080" alt="Screenshot (372)" src="https://github.com/user-attachments/assets/e736c213-5a43-47af-af46-6924e0654707" />
 Reason: Generates an index.html file showing EC2 hostname and public IP.
 
 Test in browser:
@@ -218,6 +220,7 @@ Test in browser:
 ```
 http://16.170.224.78
 ```
+<img width="1920" height="1080" alt="Screenshot (373)" src="https://github.com/user-attachments/assets/f06d611f-3c5e-4545-a70d-3ec8441eb4e8" />
 
 Create PHP info page:
 
@@ -231,12 +234,13 @@ Paste:
 <?php
 phpinfo();
 ```
+<img width="1920" height="1080" alt="Screenshot (375)" src="https://github.com/user-attachments/assets/bbdf325c-bd98-45d7-87e2-f3122e2f8728" />
 
 Test:
-
 ```
 http://16.170.224.78/info.php
 ```
+<img width="1920" height="1080" alt="Screenshot (376)" src="https://github.com/user-attachments/assets/3ec3c7b9-efb3-4fd0-ae3a-d5c665a0933a" />
 
 Delete PHP info file:
 
@@ -263,7 +267,7 @@ CREATE USER 'chi'@'%' IDENTIFIED WITH mysql_native_password BY 'PassWord.1';
 GRANT ALL ON hairsbydimani.* TO 'chi'@'%';
 EXIT;
 ```
-
+<img width="1920" height="1080" alt="Screenshot (386)" src="https://github.com/user-attachments/assets/59a72bcd-4bb5-4fe5-b589-0aa3e2005563" />
 Reason: Sets up database and user with PHP-compatible authentication.
 
 ### Verify Access
@@ -271,25 +275,22 @@ Reason: Sets up database and user with PHP-compatible authentication.
 ```bash
 mysql -u chi -p
 ```
+<img width="1920" height="1080" alt="Screenshot (387)" src="https://github.com/user-attachments/assets/9f71dbf0-0ec1-4c5b-8a8c-317c63c740d9" />
 
 Enter password: `PassWord.1`
 
 ```sql
 SHOW DATABASES;
 ```
+<img width="1920" height="1080" alt="Screenshot (388)" src="https://github.com/user-attachments/assets/bbfb48f9-2b3f-4637-9af2-7c218a43b04a" />
 
 ### Create Table and Insert Data
-
-
 This is optional but makes my setup more personal.
-
 Instead of using a generic database name, I renamed mine to match my hair business brand:
-
 Database name: hairsbydimani
-
 Table name: todo_list (but tailored it for hair business services)
-
 Here’s how I customized it in MySQL:
+
 ```sql
 CREATE TABLE hairsbydimani.todo_list (
     item_id INT AUTO_INCREMENT,
@@ -305,6 +306,9 @@ INSERT INTO hairsbydimani.todo_list (content) VALUES ("hair coloring");
 SELECT * FROM hairsbydimani.todo_list;
 EXIT;
 ```
+<img width="1920" height="1080" alt="Screenshot (391)" src="https://github.com/user-attachments/assets/8d28199b-18a7-48d7-b4f8-ee5377203c64" />
+
+<img width="1920" height="1080" alt="Screenshot (390)" src="https://github.com/user-attachments/assets/7a709596-92b2-4ece-86fb-e1a4acfdcf0b" />
 
 
 ### Create PHP Script to Display Data
@@ -312,7 +316,6 @@ EXIT;
 ```bash
 nano /var/www/projectLEMP/todo_list.php
 ```
-
 Paste:
 
 ```php
@@ -334,12 +337,14 @@ try {
     die();
 }
 ```
+<img width="1920" height="1080" alt="Screenshot (392)" src="https://github.com/user-attachments/assets/d8a8aaa8-0e34-4c37-95c8-94771361c711" />
 
 Test in browser:
 
 ```
 http://16.170.224.78/todo_list.php
 ```
+<img width="1920" height="1080" alt="Screenshot (393)" src="https://github.com/user-attachments/assets/de62518c-9fbd-4d45-8086-b00127c4572b" />
 
 You should see:
 
