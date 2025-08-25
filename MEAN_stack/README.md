@@ -77,13 +77,13 @@ Using NodeSource ensures a clean, up-to-date Node.js + npm:
 curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
-<img width="1920" height="1080" alt="Screenshot (523)" src="https://github.com/user-attachments/assets/d22e6677-65ed-481e-b52d-97485d341926" />
+<img width="1920" height="1080" alt="Screenshot (525)" src="https://github.com/user-attachments/assets/f16732dc-ad53-4768-ab8e-a323e0c5fe9d" />
 
 (If needed) Ensure curl & gnupg are present
 ```bash
 sudo apt-get install -y gnupg curl
 ```
-<img width="1920" height="1080" alt="Screenshot (533)" src="https://github.com/user-attachments/assets/eaf881f5-164e-40f6-b21b-20a4f262b71d" />
+<img width="1920" height="1080" alt="Screenshot (526)" src="https://github.com/user-attachments/assets/b0e0801a-7bb6-40f4-9bfd-8a35eccc659c" />
 
 # MongoDB 7.0 (official repo)
 Import MongoDB’s GPG key and set up its apt source:
@@ -101,7 +101,6 @@ Install MongoDB:
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 ```
-<img width="1920" height="1080" alt="Screenshot (535)" src="https://github.com/user-attachments/assets/0e9b8b9a-65f5-4d7a-8b03-f74b48580e2a" />
 
 Start & check status (note the service name is mongod, not mongodb):
 
@@ -129,7 +128,8 @@ Initialize npm:
 ```bash
 npm init
 ```
-<img width="1920" height="1080" alt="Screenshot (532)" src="https://github.com/user-attachments/assets/96702ed4-6158-433d-bb2b-53625d77669a" />
+
+<img width="1920" height="1080" alt="Screenshot (533)" src="https://github.com/user-attachments/assets/5c961019-2084-439d-a35c-23b336ac64a4" />
 
  Tip: If you accidentally type shell commands inside the npm init prompt (e.g., vi server.js), npm will complain about invalid package names. If that happens, hit CTRL + C and re-run npm init -y.
 
@@ -176,7 +176,7 @@ I eventually used Express v4 to avoid a path-to-regexp error found in Express v5
 ```bash
 npm install express@4 mongoose
 ```
-<img width="1920" height="1080" alt="Screenshot (533)" src="https://github.com/user-attachments/assets/ba2cd2a2-f5f4-48cb-aa5e-355878814ac3" />
+
 
 # Backend: Express + Mongoose
 
@@ -459,6 +459,7 @@ Fix: Use the correct service name mongod:
 sudo systemctl start mongod
 sudo systemctl status mongod
 ```
+<img width="1920" height="1080" alt="Screenshot (529)" src="https://github.com/user-attachments/assets/b460c692-5f5e-4837-9d62-e8ab45db4151" />
 
 - Installing npm from Ubuntu repos caused dependency hell (on some systems)
 
@@ -495,6 +496,7 @@ sudo chown -R $USER:$USER ~/Books
 rm -rf node_modules package-lock.json
 npm install
 ```
+<img width="1920" height="1080" alt="Screenshot (535)" src="https://github.com/user-attachments/assets/6cdc46a1-458a-4ce2-8f51-47bdfcfe7f55" />
 
 Tip: Avoid sudo npm ... in project directories.
 
