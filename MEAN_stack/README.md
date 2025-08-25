@@ -25,6 +25,7 @@ It uses:
 ### Accounts & Cloud
 - **AWS Account**
 - **EC2 Instance**: Ubuntu Server **22.04 LTS (Ubuntu 24.04 LTS)**
+<img width="1920" height="1080" alt="Screenshot (539)" src="https://github.com/user-attachments/assets/4fb51f9d-7aba-490b-8f00-2c8953ae91c3" />
 
 ### Local Machine (Windows)
 - **SSH client** (e.g., Git Bash 
@@ -36,6 +37,7 @@ It uses:
   - `TCP 22` (SSH) from your IP (required to connect)
   - `TCP 3300` (app port) from your IP / anywhere (for public testing)
 
+<img width="1920" height="1080" alt="Screenshot (540)" src="https://github.com/user-attachments/assets/61aabbdb-8d38-46cb-b9f8-af1963c385bc" />
 
 ### Core Packages (Installed on EC2)
 - `curl`, `gnupg`, `dirmngr`, `apt-transport-https`, `lsb-release`, `ca-certificates`
@@ -55,6 +57,7 @@ SSH into EC2 using your PEM key and public IP:
 ```bash
 ssh -i steghub.pem ubuntu@16.170.231.38
 ```
+<img width="1920" height="1080" alt="Screenshot (522)" src="https://github.com/user-attachments/assets/52e874ab-4686-45d5-9ace-f07a138f993c" />
 
 Update and upgrade the instance:
 ```bash
@@ -74,11 +77,13 @@ Using NodeSource ensures a clean, up-to-date Node.js + npm:
 curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
+<img width="1920" height="1080" alt="Screenshot (523)" src="https://github.com/user-attachments/assets/d22e6677-65ed-481e-b52d-97485d341926" />
 
 (If needed) Ensure curl & gnupg are present
 ```bash
 sudo apt-get install -y gnupg curl
 ```
+<img width="1920" height="1080" alt="Screenshot (533)" src="https://github.com/user-attachments/assets/eaf881f5-164e-40f6-b21b-20a4f262b71d" />
 
 # MongoDB 7.0 (official repo)
 Import MongoDB’s GPG key and set up its apt source:
@@ -96,6 +101,7 @@ Install MongoDB:
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 ```
+<img width="1920" height="1080" alt="Screenshot (535)" src="https://github.com/user-attachments/assets/0e9b8b9a-65f5-4d7a-8b03-f74b48580e2a" />
 
 Start & check status (note the service name is mongod, not mongodb):
 
@@ -104,11 +110,13 @@ sudo service mongod start
 sudo systemctl status mongod
 ```
 Why: mongod is the daemon (service) that runs MongoDB. Using the wrong unit name (mongodb) returns “Unit not found.”
+<img width="1920" height="1080" alt="Screenshot (529)" src="https://github.com/user-attachments/assets/a01bb29d-fe2b-46ce-97c9-1b4794e2e6ac" />
 
 Install body-parser (middleware for JSON)
 ```bash
 sudo npm install body-parser
 ```
+<img width="1920" height="1080" alt="Screenshot (531)" src="https://github.com/user-attachments/assets/4cfe976c-39ff-4d23-a195-a139f5e75c92" />
 
 # Create the Project (Books)
 
@@ -121,6 +129,8 @@ Initialize npm:
 ```bash
 npm init
 ```
+<img width="1920" height="1080" alt="Screenshot (532)" src="https://github.com/user-attachments/assets/96702ed4-6158-433d-bb2b-53625d77669a" />
+
  Tip: If you accidentally type shell commands inside the npm init prompt (e.g., vi server.js), npm will complain about invalid package names. If that happens, hit CTRL + C and re-run npm init -y.
 
  Create the server entry file:
@@ -166,6 +176,7 @@ I eventually used Express v4 to avoid a path-to-regexp error found in Express v5
 ```bash
 npm install express@4 mongoose
 ```
+<img width="1920" height="1080" alt="Screenshot (533)" src="https://github.com/user-attachments/assets/ba2cd2a2-f5f4-48cb-aa5e-355878814ac3" />
 
 # Backend: Express + Mongoose
 
@@ -408,6 +419,7 @@ Start the server:
 ```bash
 node server.js
 ```
+<img width="1920" height="1080" alt="Screenshot (536)" src="https://github.com/user-attachments/assets/b17e5d7b-99e8-4549-933d-222e2338e739" />
 
 You should see:
 
@@ -425,6 +437,7 @@ curl -s http://localhost:3300
 Open TCP 3300 in your EC2 Security Group, then visit from your browser:
 
 http://<YOUR-EC2-PUBLIC-IP>:3300
+<img width="1920" height="1080" alt="Screenshot (537)" src="https://github.com/user-attachments/assets/a3e22c5a-59e2-42da-87d9-5e9aa46f45c1" />
 
 # Security Group (SG) Rules
 
