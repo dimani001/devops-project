@@ -60,6 +60,7 @@ sudo apt install mysql-server -y
 ```
 
 Installs the **MySQL server software** so this machine can act as a **database server**.
+<img width="1920" height="1080" alt="installing mysql server" src="https://github.com/user-attachments/assets/e1f29035-f783-4970-b1c3-0ba76f9b7143" />
 
 
 ### **4. Configure MySQL for Remote Access**
@@ -80,6 +81,7 @@ To:
 ```ini
 bind-address = 0.0.0.0
 ```
+<img width="1920" height="1080" alt="bind address" src="https://github.com/user-attachments/assets/fa97db18-0dfd-4617-9500-ee80ef824748" />
 
 This allows MySQL to accept connections from **any IP address**, not just localhost.
 
@@ -109,6 +111,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'dimma'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;
 ```
+<img width="1920" height="1080" alt="setting mysql user" src="https://github.com/user-attachments/assets/65f1fd76-710e-4133-bc56-9b11824b9a55" />
 
  Explanation:
 
@@ -133,6 +136,7 @@ Installs the **MySQL client utility** used to connect to remote MySQL servers.
 ```bash
 mysql --version
 ```
+<img width="1920" height="1080" alt="mysql client version" src="https://github.com/user-attachments/assets/b99862c4-f029-4d42-bff4-150bd4ae869a" />
 
  Confirms that the MySQL client was installed correctly.
 
@@ -150,6 +154,7 @@ Example:
 ```bash
 mysql -u dimma -p -h 51.20.114.25
 ```
+  <img width="1920" height="1080" alt="mysql client connection" src="https://github.com/user-attachments/assets/8ee6b10d-d83b-4d4e-aaab-5025bb46e534" />
  Connects the **client machine** to the **server’s MySQL instance** using the remote user credentials.
 
 
@@ -159,7 +164,10 @@ mysql -u dimma -p -h 51.20.114.25
 
    ```sql
    SHOW DATABASES;
-   ```
+  ```
+
+<img width="1920" height="1080" alt="show databases" src="https://github.com/user-attachments/assets/7b16eef4-fda7-40ff-875f-fbb9c6c876d1" />
+
 
  Lists all existing databases.
 
@@ -170,6 +178,7 @@ mysql -u dimma -p -h 51.20.114.25
    ```
 
     Creates a new database named `dimani`.
+<img width="1920" height="1080" alt="create database" src="https://github.com/user-attachments/assets/edf078ce-5037-4c10-a242-14190433d717" />
 
 3. **Use the database**:
 
@@ -199,6 +208,7 @@ mysql -u dimma -p -h 51.20.114.25
    ```
 
     Adds a sample user record into the `users` table.
+<img width="1920" height="1080" alt="create table" src="https://github.com/user-attachments/assets/e26d89a7-0a7b-4c60-9445-b0901b059709" />
 
 6. **Verify data**:
 
@@ -223,9 +233,10 @@ mysql -u dimma -p -h 51.20.114.25
    ```
 
     Deletes the `dimani` database.
+<img width="1920" height="1080" alt="drop table and database" src="https://github.com/user-attachments/assets/432cfad0-6f79-47ed-a92e-0b680814a462" />
 
 9. **Exit MySQL**:
-
+    
    ```sql
    EXIT;
    ```
