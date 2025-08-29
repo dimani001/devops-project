@@ -22,6 +22,7 @@ Before starting, ensure you have:
 
 * An **AWS account**
 * Two **Ubuntu EC2 instances** in the same VPC/security group
+<img width="1920" height="1080" alt="two instances" src="https://github.com/user-attachments/assets/9199f641-0dc2-4a34-b15d-bf4ba3001a8d" />
 
   * **Server instance** (for MySQL Server)
   * **Client instance** (for MySQL Client)
@@ -30,6 +31,7 @@ Before starting, ensure you have:
 
   * **Port 22 (SSH)** for management
   * **Port 3306 (MySQL)** for remote DB access
+<img width="1920" height="1080" alt="SG 3306" src="https://github.com/user-attachments/assets/567da991-b97b-4450-8dfc-5b34d8aad184" />
 
 
 ##  Steps Involved
@@ -166,8 +168,7 @@ mysql -u dimma -p -h 51.20.114.25
    SHOW DATABASES;
   ```
 
-<img width="1920" height="1080" alt="show databases" src="https://github.com/user-attachments/assets/7b16eef4-fda7-40ff-875f-fbb9c6c876d1" />
-
+<img width="1920" height="1080" alt="show databases" src="https://github.com/user-attachments/assets/a19376e4-3e3b-43e0-8256-37f6d3cc9fa5" />
 
  Lists all existing databases.
 
