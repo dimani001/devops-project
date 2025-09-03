@@ -13,8 +13,10 @@ Both the Web Server and DB Server use attached **EBS volumes** with **LVM partit
 
 * **WordPress Server (Web Server)**: Red Hat EC2
 * **DB Server**: Red Hat EC2
-* Attach **3 EBS Volumes (10GB each)** to each server (in the same AZ: `eu-north1c`).
+  <img width="1920" height="1080" alt="Screenshot (594)" src="https://github.com/user-attachments/assets/be98062d-162e-48fc-9173-46512c54c460" />
 
+* Attach **3 EBS Volumes (10GB each)** to each server (in the same AZ: `eu-north1c`).
+<img width="1920" height="1080" alt="Screenshot (593)" src="https://github.com/user-attachments/assets/01f11fcf-a400-4c5c-984f-2f64334fc1de" />
 
 ##  Step 2 — Configure Storage (Web Server)
 
@@ -37,6 +39,7 @@ lsblk
 df -h
 ```
 - Show current disk usage and mounted partitions. Helps verify what is mounted before changes.
+<img width="1920" height="1080" alt="Screenshot (576)" src="https://github.com/user-attachments/assets/31e7f8e5-b062-4163-9e8c-a69f0d31063d" />
 
 
 ### Partition Disks with `gdisk`
@@ -84,6 +87,7 @@ nvme2n1    10G
 nvme3n1    10G
 └─nvme3n1p1
 ```
+<img width="1920" height="1080" alt="Screenshot (580)" src="https://github.com/user-attachments/assets/c0803bef-3e47-4359-8256-4217a0a3f0d5" />
 
 
 ### Install LVM & Scan
@@ -124,6 +128,7 @@ sudo vgcreate webdata-vg /dev/nvme1n1p1 /dev/nvme2n1p1 /dev/nvme3n1p1
 sudo vgs
 ```
 - Displays details of the volume group.
+<img width="1920" height="1080" alt="Screenshot (582)" src="https://github.com/user-attachments/assets/d4ab30cc-114c-4a80-9298-a1050f43add1" />
 
 
 ### Create Logical Volumes
@@ -142,6 +147,8 @@ sudo lvcreate -n logs-lv -L 14G webdata-vg
 sudo lvs
 ```
 - Shows logical volume details.
+- 
+<img width="1920" height="1080" alt="Screenshot (590)" src="https://github.com/user-attachments/assets/32cac924-edc3-4bc8-a5d2-a1f8f2dedfbb" />
 
 
 ### Verify Setup
@@ -151,6 +158,7 @@ sudo vgdisplay -v
 sudo lsblk
 ```
 - Verifies that the VG, PVs, and LVs are correctly set up.
+<img width="1920" height="1080" alt="Screenshot (584)" src="https://github.com/user-attachments/assets/2a92d192-0fd7-4c66-8132-6d76ab32a0b8" />
 
 
 ### Format Volumes
@@ -160,6 +168,7 @@ sudo mkfs -t ext4 /dev/webdata-vg/apps-lv
 sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
 ```
 - Formats both logical volumes with ext4 filesystem.
+<img width="1920" height="1080" alt="Screenshot (586)" src="https://github.com/user-attachments/assets/e39c96a1-badb-4408-8992-00e08438c87a" />
 
 ### Mount Volumes
 
@@ -188,6 +197,7 @@ sudo mount /dev/webdata-vg/logs-lv /var/log
 sudo rsync -av /home/recovery/logs/ /var/log
 ```
 - Restores old logs back after remount.
+<img width="1920" height="1080" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/d74e7a76-b325-4189-b0cb-82b63a547261" />
 
 
 ### Persist Mounts
@@ -196,6 +206,7 @@ sudo rsync -av /home/recovery/logs/ /var/log
 sudo blkid
 ```
 - Gets UUIDs of mounted partitions for permanent mount setup.
+<img width="1920" height="1080" alt="Screenshot (588)" src="https://github.com/user-attachments/assets/62f3c900-8083-4f7e-8532-e77f6b1326e7" />
 
 ```bash
 sudo vi /etc/fstab
@@ -210,6 +221,7 @@ UUID=5f1c4a3b-a8f6-447a-82c6-587f4d1eb132   /home/recovery/logs ext4    defaults
 ```
 i.e : UUID=<UUID-for-apps-lv>   /var/www/html       ext4    defaults  0 0
       UUID=<UUID-for-logs-lv>   /home/recovery/logs ext4    defaults  0 0
+<img width="1920" height="1080" alt="Screenshot (589)" src="https://github.com/user-attachments/assets/6e308055-ae93-4bcd-a3b3-be4961e02e02" />
 
 Apply changes:
 
@@ -223,6 +235,7 @@ sudo systemctl daemon-reload
 df -h
 ```
 - Confirms mounted volumes.
+<img width="1920" height="1080" alt="Screenshot (591)" src="https://github.com/user-attachments/assets/767e7b5d-d789-42f1-beff-a7f551293ab1" />
 
 ##  Step 3 — Configure Storage (DB Server)
 
@@ -238,7 +251,9 @@ Repeat the same steps as above on a second RedHat EC2 instance (DB Server) but:,
 * Mount it to `/db` instead of `/var/www/html`.
 
 `logs-lv` setup is identical (mounted to `/var/log`).
+<img width="1920" height="1080" alt="Screenshot (601)" src="https://github.com/user-attachments/assets/5e7d3727-30e8-4df0-bc4e-947ce493e30a" />
 
+<img width="1920" height="1080" alt="Screenshot (606)" src="https://github.com/user-attachments/assets/3222e309-575f-4897-bba7-2e9b4001d356" />
 
 ##  Step 4 — Install WordPress on Web Server
 
@@ -270,6 +285,7 @@ sudo systemctl start httpd
 sudo systemctl status httpd
 ```
 - Confirms Apache is running.
+<img width="1920" height="1080" alt="Screenshot (607)" src="https://github.com/user-attachments/assets/0c9044a8-cb81-41c0-a48c-01481781638e" />
 
 
 ### Install PHP Modules
@@ -324,12 +340,14 @@ phpinfo();
 ?>
 ```
 - Verifies PHP is working when accessed in the browser.
+<img width="1920" height="1080" alt="Screenshot (609)" src="https://github.com/user-attachments/assets/9f5f6ab2-1f5c-470f-b5c2-ecb9c4310bc1" />
 
 Visit:
 
 ```
 http://<Web-Server-Public-IP>/info.php
 ```
+<img width="1920" height="1080" alt="Screenshot (610)" src="https://github.com/user-attachments/assets/d7ba927b-44c8-47e7-a94e-c4f10b7acf12" />
 
 
 ### Install WordPress
@@ -363,6 +381,7 @@ sudo cp -R wordpress /var/www/html/
 ```
 - Copies WordPress files into Apache’s web root.
 
+<img width="1920" height="1080" alt="Screenshot (608)" src="https://github.com/user-attachments/assets/6c68266d-8690-4c25-a5c0-d3e4fa15227a" />
 
 Set SELinux policies:
 
@@ -399,6 +418,7 @@ sudo systemctl enable mysqld
 ```
 - Verify, restart, and enable MySQL service.
 
+<img width="1920" height="1080" alt="Screenshot (613)" src="https://github.com/user-attachments/assets/b9476cf8-b0b0-4607-bb1d-453237dfac97" />
 
 ##  Step 6 — Configure MySQL for WordPress
 
@@ -418,6 +438,7 @@ SHOW DATABASES;
 exit;
 ```
 - Creates a database, a user, and grants permissions for the Web Server Private IP.
+<img width="1920" height="1080" alt="Screenshot (614)" src="https://github.com/user-attachments/assets/72d3a734-b0dc-462f-9b11-22b410822089" />
 
 ##  Step 7 — Configure WordPress DB Connection
 
@@ -443,6 +464,7 @@ Check DB access:
 SHOW DATABASES;
 ```
 - Confirms connection is successful.
+<img width="1920" height="1080" alt="Screenshot (617)" src="https://github.com/user-attachments/assets/8e48d29a-36a9-41b1-aad8-527a08c99d7a" />
 
 
 Update WordPress config:
@@ -460,11 +482,13 @@ define('DB_USER', 'dimma');
 define('DB_PASSWORD', 'mypass');
 define('DB_HOST', '172.31.7.221');  // DB Server Private IP
 ```
+<img width="1920" height="1080" alt="Screenshot (620)" src="https://github.com/user-attachments/assets/32d08364-916a-4ccf-bb63-1277c22f736e" />
 
 ##  Step 8 — Finalize Network & Access
 
 * Open **MySQL port 3306** on DB Server, restricted to Web Server private IP.
 * Open **HTTP port 80** on Web Server for public access.
+<img width="1920" height="1080" alt="Screenshot (615)" src="https://github.com/user-attachments/assets/c5a0cd06-6053-4b0a-aa66-8542c6640705" />
 
 
 ##  Step 9 — Access WordPress
@@ -476,4 +500,7 @@ http://<Web-Server-Public-IP>/wordpress/
 ```
 
 Fill in DB credentials to complete WordPress setup.
+<img width="1920" height="1080" alt="Screenshot (622)" src="https://github.com/user-attachments/assets/1dee64d4-d443-497c-be9c-877f3a3ca119" />
+
+<img width="1920" height="1080" alt="Screenshot (623)" src="https://github.com/user-attachments/assets/9cefd9bb-a4ad-47f0-a327-dbf5f964f66d" />
 
