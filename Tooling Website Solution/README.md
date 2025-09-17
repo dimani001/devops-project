@@ -1,4 +1,4 @@
-# DEVOPS TOOLING WEBSITE SOLUTION
+<img width="1920" height="1080" alt="Screenshot (624)" src="https://github.com/user-attachments/assets/4ef3143a-3d76-4e61-9af3-aaf325205038" /># DEVOPS TOOLING WEBSITE SOLUTION
 
 ## TASK: Implement a 2-tier web application architecture with MySQL database and NFS shared storage
 
@@ -17,6 +17,7 @@ HTTP (80), HTTPS (443), SSH (22) for web servers
 MySQL (3306) for database server
 
 NFS (2049, 111 TCP/UDP) for NFS server
+<img width="1920" height="827" alt="SecurityGroup-EC2-eu-north-1-09-17-2025_08_51_AM" src="https://github.com/user-attachments/assets/55358337-375a-4973-ba47-4d7b05bd6f64" />
 
 ## ENVIRONMENT:
 - **NFS Server**: 13.49.46.137 (172.31.19.59) - RHEL 9
@@ -24,6 +25,7 @@ NFS (2049, 111 TCP/UDP) for NFS server
 - **Web Server 1**: 13.51.237.76 (172.31.20.187) - RHEL 9
 - **Web Server 2**: 51.20.92.125 (172.31.28.1) - RHEL 9
 - **Web Servers Subnet CIDR**: 172.31.16.0/20
+<img width="1920" height="827" alt="Instances-EC2-eu-north-1-09-17-2025_08_53_AM" src="https://github.com/user-attachments/assets/812d3b0a-d077-4fd4-a34c-c9d8f9e93071" />
 
 ## STEP ONE: SETTING UP NFS SERVER
 
@@ -34,6 +36,11 @@ NFS (2049, 111 TCP/UDP) for NFS server
 # SSH to NFS server
 ssh -i your-key.pem ec2-user@13.49.46.137
 ```
+# Check the disks available
+```bash
+lsblk
+```
+<img width="1920" height="1080" alt="Screenshot (624)" src="https://github.com/user-attachments/assets/46029fa7-04ec-4679-b0c7-1c1c6b09654d" />
 
 # Create partitions on attached EBS volumes
 ```bash
@@ -42,6 +49,7 @@ sudo gdisk /dev/nvme2n1
 sudo gdisk /dev/nvme3n1
 ```
 # Reason: Partitioning is required for creating physical volumes for LVM
+<img width="1920" height="1080" alt="Screenshot (625)" src="https://github.com/user-attachments/assets/e64f3939-76fa-4e89-a7d9-e9e66d14f1e0" />
 
 # Create LVM physical volumes and volume group
 ```bash
@@ -56,13 +64,15 @@ sudo lvcreate -n apps-lv -L 10G webdata-vg
 sudo lvcreate -n logs-lv -L 10G webdata-vg
 sudo lvcreate -n opt-lv -L 10G webdata-vg
 ```
-# Format LVs with XFS filesystem
+<img width="1920" height="1080" alt="Screenshot (688)" src="https://github.com/user-attachments/assets/a99f25db-fabf-46e9-9dbe-197b15eb75a3" />
 
+# Format the logical volumes using xfs 
 ```bash
 sudo mkfs.xfs /dev/webdata-vg/apps-lv
 sudo mkfs.xfs /dev/webdata-vg/logs-lv
 sudo mkfs.xfs /dev/webdata-vg/opt-lv
 ```
+
 # Create mount points and mount volumes
 ```bash
 sudo mkdir /mnt/apps /mnt/logs /mnt/opt
@@ -77,6 +87,7 @@ sudo yum install nfs-utils -y
 sudo systemctl start nfs-server
 sudo systemctl enable nfs-server
 ```
+<img width="1920" height="1080" alt="Screenshot (626)" src="https://github.com/user-attachments/assets/f3ac62ab-b33e-4376-a0e6-e7772d2aa4e0" />
 
 # Set permissions for shared directories
 ```bash
@@ -84,6 +95,7 @@ sudo chown -R nobody: /mnt/apps /mnt/logs /mnt/opt
 sudo chmod -R 777 /mnt/apps /mnt/logs /mnt/opt
 ```
 # Reason: Ensure NFS clients can read/write to shared directories
+<img width="1920" height="1080" alt="Screenshot (658)" src="https://github.com/user-attachments/assets/dc072fbc-dc5d-4c05-9d74-9bf3b8bfc2ee" />
 
 # Configure exports
 ```bash
@@ -107,6 +119,7 @@ sudo exportfs -arv
 ```bash
 rpcinfo -p | grep nfs
 ```
+<img width="1920" height="1080" alt="Screenshot (659)" src="https://github.com/user-attachments/assets/73d6615e-e73f-4717-b1e0-90c86ce6729c" />
 
 
 ## STEP TWO: CONFIGURING MYSQL SERVER
@@ -130,6 +143,7 @@ sudo apt install mysql-server -y
 sudo systemctl status mysql
 #Should show active (running).
 ```
+<img width="1920" height="1080" alt="Screenshot (660)" src="https://github.com/user-attachments/assets/0a913895-421c-48bd-ab98-8f99660afba6" />
 
 # Secure MySQL installation
 ```bash
@@ -149,6 +163,7 @@ FLUSH PRIVILEGES;
 EXIT;
 # Reason: Provides restricted database access to web servers only
 ```
+<img width="1920" height="1080" alt="Screenshot (675)" src="https://github.com/user-attachments/assets/0315b411-233f-4178-9d79-6de86865ae87" />
 
 # Enable remote access
 ```bash
@@ -156,6 +171,7 @@ sudo sed -i 's/bind-address.*=.*127.0.0.1/bind-address = 0.0.0.0/' /etc/mysql/my
 sudo systemctl restart mysql
 # Reason: Allows MySQL server to accept connections from web servers
 ```
+<img width="1920" height="1080" alt="Screenshot (661)" src="https://github.com/user-attachments/assets/b0acce59-1c91-495a-8ecd-b5c12e26330e" />
 
 ## STEP THREE: SETUP THE WEBSERVERS
 
@@ -191,6 +207,8 @@ sudo vi /etc/fstab
 172.31.19.59:/mnt/apps /var/www nfs defaults 0 0
 # save and exit
 ```
+<img width="1920" height="1080" alt="Screenshot (676)" src="https://github.com/user-attachments/assets/19250a23-1b94-4aa3-bced-43ec3c820c07" />
+<img width="1920" height="1080" alt="Screenshot (677)" src="https://github.com/user-attachments/assets/432e7bec-9daf-4fea-8088-59b610705030" />
 
 # install and configure REMI repository, apache, as well as php and all dependencies
 # Install Apache and PHP
@@ -215,8 +233,15 @@ sudo setsebool -P httpd_execmem 1
 # Verify that both the webservers /var/www and NFS servers /mnt/apps have the same files and directories, to do this,
 ```bash
 ls /var/www #on the webservers
+```
+<img width="1920" height="1080" alt="Screenshot (680)" src="https://github.com/user-attachments/assets/01b932b1-c09e-4fdf-b2ea-57d13c148f97" />
+<img width="1920" height="1080" alt="Screenshot (681)" src="https://github.com/user-attachments/assets/29570c9d-e294-447f-8f3e-5e0c77b4f1f2" />
+
+```bash
 ls /mnt/apps #on the nfs server
 ```
+<img width="1920" height="1080" alt="Screenshot (679)" src="https://github.com/user-attachments/assets/69f2d3e5-6082-4f0b-954b-a84faf169192" />
+
 ```bash
 df -h
 ```
@@ -262,6 +287,8 @@ mysql -h 172.31.41.146 -u webaccess -p -e "SHOW DATABASES;"
 # Password: StrongPass123!
 # Reason: Verify that web servers can access MySQL database
 ```
+<img width="1920" height="1080" alt="Screenshot (682)" src="https://github.com/user-attachments/assets/90c793df-d5ba-48cf-8792-7e279a8d79bb" />
+<img width="1920" height="1080" alt="Screenshot (683)" src="https://github.com/user-attachments/assets/cbb73932-0f0d-4202-b9e7-9bfef70749fb" />
 
 ## STEP FIVE: DEPLOYING THE WEBSITE
 
@@ -281,6 +308,7 @@ sudo chmod -R 755 /var/www/html
 sudo vi /var/www/html/functions.php
 # Update: $db = mysqli_connect('172.31.41.146', 'webaccess', 'StrongPass123!', 'tooling');
 ```
+<img width="1920" height="1080" alt="Screenshot (667)" src="https://github.com/user-attachments/assets/2fd4cefe-b055-4b4d-bb83-9058e9bbd773" />
 
 # Import database schema
 ```bash
@@ -296,6 +324,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_type`, `status
 (1, 'myuser', '5f4dcc3b5aa765d61d8327deb882cf99', 'user@mail.com', 'admin', '1');
 exit
 ```
+<img width="1920" height="1080" alt="Screenshot (690)" src="https://github.com/user-attachments/assets/af2c3bf3-0f45-4083-8a56-e971876491b3" />
 
 # Configure SELinux for NFS
 ```bash
@@ -315,6 +344,9 @@ sudo systemctl restart httpd
    - Username: `myuser`
    - Password: `password`
 3. **Verify both web servers** are accessible
+<img width="1920" height="1080" alt="Screenshot (684)" src="https://github.com/user-attachments/assets/625d5e3a-32b1-4899-aa18-f68dc73122d6" />
+<img width="1920" height="1080" alt="Screenshot (685)" src="https://github.com/user-attachments/assets/fac4b07d-fce3-49d1-9591-69e80708d750" />
+<img width="1920" height="1080" alt="Screenshot (686)" src="https://github.com/user-attachments/assets/42af05b9-12aa-48cc-9622-f4c0e66284ce" />
 
 ## SECURITY GROUP CONFIGURATION
 - **Web servers**: Allow HTTP (80), HTTPS (443), SSH (22) from 0.0.0.0/0
