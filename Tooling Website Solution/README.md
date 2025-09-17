@@ -1,7 +1,4 @@
-<img width="1920" height="1080" alt="Screenshot (624)" src="https://github.com/user-attachments/assets/4ef3143a-3d76-4e61-9af3-aaf325205038" /># DEVOPS TOOLING WEBSITE SOLUTION
-
 ## TASK: Implement a 2-tier web application architecture with MySQL database and NFS shared storage
-
 
 ## Prerequisites:
 **Infrastructure**: AWS
