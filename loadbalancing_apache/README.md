@@ -35,7 +35,9 @@ Internet Users → Load Balancer (Apache) → [Web Server 1, Web Server 2] → M
 - Web Server 2: RHEL 8 (172.31.28.1)
 - MySQL Server: Ubuntu (172.31.41.146)
 - NFS Server: RHEL 8 (172.31.19.59)
+
 <img width="1920" height="1080" alt="Screenshot (712)" src="https://github.com/user-attachments/assets/65eae57b-c8eb-4d5d-9d7e-1869c4907c48" />
+
 
 ## Step-by-Step Implementation
 
@@ -50,12 +52,17 @@ ssh -i <key.pem> ubuntu@<LB IP address>
 - Ubuntu is chosen for the LB because it has excellent Apache support and stable LTS releases.
 <img width="1920" height="1080" alt="ssh'd into LB server" src="https://github.com/user-attachments/assets/31a334c2-65e9-4511-b1bc-fa16bdb69f13" />
 
+```
+- Ubuntu is chosen for the LB because it has excellent Apache support and stable LTS releases.
+
+
 ## Step 2: Install Apache and Required Modules
 ```bash
 # Update package repository
 sudo apt update
 # Purpose: Ensures we have the latest package information
-<img width="1920" height="1080" alt="server updated" src="https://github.com/user-attachments/assets/7c7e7d79-e0e6-4cc8-bc28-56187e6c2202" />
+
+<img width="1920" height="1080" alt="server updated" src="https://github.com/user-attachments/assets/7c7e7d79-e0e6-4cc8-bc28-56187e6c2202" m-
 
 # Install Apache2
 sudo apt install apache2 -y
@@ -65,7 +72,10 @@ sudo apt install apache2 -y
 sudo apt-get install libxml2-dev
 # Purpose: Provides XML processing capabilities needed by Apache modules
 ```
+
 <img width="1920" height="1080" alt="downloaded packages" src="https://github.com/user-attachments/assets/a38071dd-30ac-4bb0-bee3-1f98152fd7bc" />
+
+
 
 ## Step 3: Enable Apache Modules
 ```bash
@@ -109,7 +119,10 @@ sudo systemctl restart apache2
 sudo systemctl status apache2
 ```
 - Purpose: Confirms Apache is running correctly after configuration changes
+
 <img width="1920" height="1080" alt="apache server running" src="https://github.com/user-attachments/assets/a3c8988c-55df-420c-9ffc-64d6b545e441" />
+
+
 
 ## Step 5: Configure Load Balancing
 ```bash
@@ -129,7 +142,10 @@ ProxyPreserveHost On
 ProxyPass / balancer://mycluster/
 ProxyPassReverse / balancer://mycluster/
 ```
+
 <img width="1920" height="1080" alt="config test" src="https://github.com/user-attachments/assets/7c442ef2-77c8-4a13-97cc-ad32fb5b29ea" />
+
+
 
 # Configuration Explanation:
 
@@ -141,7 +157,9 @@ ProxyPassReverse / balancer://mycluster/
 - ProxyPreserveHost On: Preserves original host header from client
 - ProxyPass: Routes incoming requests to the balancer cluster
 - ProxyPassReverse: Ensures responses are properly rewritten
+
 <img width="1920" height="1080" alt="editing config file" src="https://github.com/user-attachments/assets/a3ac0647-3f36-4862-966c-450cc101760c" />
+
 
 ## Step 6: Apply Configuration
 
@@ -190,8 +208,11 @@ ProxySet lbmethod=heartbeat
 http://<Load-Balancer-Public-IP>/index.php
 # Purpose: Verify the load balancer serves the application correctly
 ```
+ 
 <img width="1920" height="1080" alt="LB IP test 1" src="https://github.com/user-attachments/assets/6abd58e1-3bdc-4893-9fe4-8c512cee9875" />
 <img width="1920" height="1080" alt="LB IP test 2" src="https://github.com/user-attachments/assets/ca7b3111-a269-4ff4-9bb9-1670b796f715" />
+
+
 
 # Monitor Traffic Distribution
 ```bash
@@ -202,7 +223,9 @@ sudo tail -f /var/log/httpd/access_log
 # Refresh browser multiple times and observe logs
 # Expected: Requests should appear in both servers' logs approximately equally
 ```
+
 <img width="1920" height="1080" alt="servers logtail" src="https://github.com/user-attachments/assets/c26b3603-c37e-4179-8e5a-1acaf2647ee5" />
+
 
 # Important Note: NFS Log Configuration
 
@@ -218,7 +241,9 @@ sudo mkdir -p /var/log/httpd
 # Restart Apache to use local logs
 sudo systemctl restart httpd
 ```
+
 <img width="1920" height="1080" alt="Screenshot (711)" src="https://github.com/user-attachments/assets/865d5e1f-b533-464f-97dd-1150d631824a" />
+
 
 ## Step 8: Optional - Local DNS Resolution
 
@@ -232,7 +257,10 @@ sudo vi /etc/hosts
 172.31.20.187 Web1
 172.31.28.1 Web2
 ```
-<img width="1920" height="1080" alt="renaming servers" src="https://github.com/user-attachments/assets/b2ed56fb-4402-482e-9238-430905dd6f63" />
+
+<img width="1920" height="1080" alt="renaming servers" src="https://github.com/user-attachments/assets/b2ed56fb-4402-482e-9238-430905dd6f63" /mM-U
+
+
 
 # Update LB Configuration with Names
 
@@ -243,7 +271,10 @@ sudo vi /etc/hosts
     ProxySet lbmethod=bytraffic
 </Proxy>
 ```
+
 <img width="1920" height="1080" alt="add named servers to config file" src="https://github.com/user-attachments/assets/48d71fa6-43bd-49f5-a20c-b8b14166c0f9" />
+
+
 
 # Test Local Resolution
 
@@ -253,7 +284,12 @@ curl http://Web1
 curl http://Web2
 # Purpose: Verify local DNS names work correctly
 ```
+
 <img width="1920" height="1080" alt="curl web 1" src="https://github.com/user-attachments/assets/cc516187-6e6e-46d4-83c7-585e0e8fc0c9" />
 <img width="1920" height="1080" alt="curl web 2" src="https://github.com/user-attachments/assets/676a0b25-e5bc-4540-8c25-d2673a34580c" />
 
 Users can access the website through a single URL, traffic is evenly distributed between web servers, and the system can withstand the failure of any single web server without service interruption.
+
+
+Users can access the website through a single URL, traffic is evenly distributed between web servers, and the system can withstand the failure of any single web server wiM-U
+
