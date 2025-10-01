@@ -102,6 +102,7 @@ Source: 0.0.0.0/0 (or your IP for security)
 # Access via web browser
 http://<Jenkins-Server-Public-IP>:8080
 ```
+<img width="1920" height="1080" alt="Screenshot (726)" src="https://github.com/user-attachments/assets/a8ea0d7a-9e55-4856-8b3c-d96a60d09830" />
 
 2. Retrieve Admin Password
 Purpose: Jenkins generates a secure initial admin password.
@@ -271,7 +272,8 @@ Exec command:
 
 ```bash
 cat /mnt/apps/README.md
+ ```
 <img width="1920" height="1080" alt="Screenshot (748)" src="https://github.com/user-attachments/assets/3c1beced-4aae-4c17-9bb2-b656e4aef714" />
 
- ```
+
 
