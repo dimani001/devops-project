@@ -121,6 +121,7 @@ Copy the password that displays as out put and paste it into your jenkins page o
 - Create admin user - set up credentials for future access
 
 - Instance configuration - use default Jenkins URL
+<img width="1920" height="1201" alt="Setup-Wizard-Jenkins-09-30-2025_01_21_PM" src="https://github.com/user-attachments/assets/ea3c9c0b-781b-4844-9e2d-aac21a288fdb" />
 
 ## Step 3 - GitHub Webhook Configuration
 1. Configure GitHub Repository (Tooling-website Repo)
@@ -137,6 +138,9 @@ Content type: application/json
 Which events: Just the push event
 
 Active: Checked
+
+<img width="1920" height="1579" alt="Add-webhook-09-30-2025_06_43_PM" src="https://github.com/user-attachments/assets/d14f19f3-8667-441e-8afc-2ea95b514fb5" />
+
 <img width="1920" height="1080" alt="Screenshot (732)" src="https://github.com/user-attachments/assets/7003e8cb-4fcf-4579-aa02-8450f3307c65" />
 
 2. Create Jenkins Freestyle Project
@@ -179,6 +183,8 @@ Add post-build action → Archive the artifacts
 Files to archive: **/*
 
 - Save the configuration
+  <img width="1920" height="4381" alt="tooling-website-ci-Config-Jenkins-09-30-2025_07_19_PM" src="https://github.com/user-attachments/assets/d0a9e6fb-fefb-47b9-9096-2c4cd5b42760" />
+
 
 # To test this, we made slight changes to the README.md file of our github repo. a build was launched automatically and the artifacts saved
 - Click "Build Now"
