@@ -15,12 +15,12 @@ This project demonstrates server automation using Ansible. The aim is to manage 
 # Infrastructure Setup
 
   Server Role	         OS	         Private IP	       Public IP	          Purpose
-- Jenkins-Ansible     Ubuntu	     10.0.1.214	      51.20.105.78	  CI/CD server, runs playbooks
-- NFS Server	      RHEL 9	     10.0.1.178	      13.62.52.162	  Shared storage for apps/logs
-- Web Server 1	      RHEL 9	     10.0.1.235	      51.20.96.151	  Web server, PHP/Apache, NFS client
-- Web Server 2	      RHEL 9	     10.0.1.198	      13.48.24.0	  Web server, PHP/Apache, NFS client
-- MySQL Database	  Ubuntu	     10.0.1.48	      13.62.19.177	  Database for applications
-- Load Balancer	      Ubuntu	     10.0.1.127	      51.20.95.74	  Nginx Reverse Proxy
+- Jenkins-Ansible     Ubuntu	     10.0.1.214	        51.20.105.78	  CI/CD server, runs playbooks
+- NFS Server	        RHEL 9	       10.0.1.178	      13.62.52.162	  Shared storage for apps/logs
+- Web Server 1	      RHEL 9	     10.0.1.235	        51.20.96.151	  Web server, PHP/Apache, NFS client
+- Web Server 2	      RHEL 9	     10.0.1.198	        13.48.24.0	    Web server, PHP/Apache, NFS client
+- MySQL Database	    Ubuntu	       10.0.1.48	      13.62.19.177	  Database for applications
+- Load Balancer	      Ubuntu	     10.0.1.127	        51.20.95.74	    Nginx Reverse Proxy
 
 * Tip: Ensure your Jenkins-Ansible server can SSH into all remote servers on port 22 using the proper SSH keys.
 
@@ -44,6 +44,7 @@ ansible-config-mgt/
 
 Rename Server: Update the Name tag in the AWS console to Jenkins-Ansible. To clearly identify the server's role in the infrastructure.The Jenkins server will double as our Ansible Control Node—the machine from which all commands and playbooks are executed.
 Connect to your Jenkins-Ansible EC2 instance. 
+<img width="3840" height="2160" alt="Screenshot (27)" src="https://github.com/user-attachments/assets/55708d18-f2be-40c4-a78a-2765f951573c" />
 
 ```bash
 ssh -i <your-private-key.pem> ubuntu@51.20.105.78
@@ -62,6 +63,7 @@ Verify Ansible installation:
 ```bash
 ansible --version
 ```
+<img width="3840" height="2160" alt="Screenshot (28)" src="https://github.com/user-attachments/assets/47e4d5e4-77df-477c-9489-148337599b55" />
 
 # Step 2: Configure the GitHub Repository and Jenkins Job 
 
@@ -82,6 +84,7 @@ git clone <YOUR_REPO_LINK>
 3. In the Build Triggers section, select GitHub hook trigger for GITScm polling.
 4. In the Post-build Actions section, select Archive the artifacts and use ** (two asterisks) as the files to archive.
 - Reason: This ensures every file in the repository is saved by Jenkins every time a build is triggered.
+<img width="3840" height="2160" alt="Screenshot (30)" src="https://github.com/user-attachments/assets/40fa3dd2-85fe-488c-ac06-01a89fe24d2e" />
 
 # 2.3 Configure the GitHub Webhook
 1. Go to your GitHub repository's Settings - Webhooks.
@@ -89,9 +92,12 @@ git clone <YOUR_REPO_LINK>
 ```bash
 http://<Jenkins-Ansible_Public_IP>:8080/github-webhook/.
 ```
+<img width="3840" height="2160" alt="Screenshot (31)" src="https://github.com/user-attachments/assets/c7f1bb00-84cc-4e4b-a4ea-7d4b2c60908b" />
+
 3. Set Content Type to application/json.
 4. Select Just the push event to trigger the build.
 - Reason: This link ensures that Jenkins automatically starts a new job whenever code is pushed to the repository.
+<img width="3840" height="2160" alt="Screenshot (32)" src="https://github.com/user-attachments/assets/3b47e831-7f8b-4f7b-925a-b1454bd734e4" />
 
 # Test the setup:
 - Make changes to the README.md file in the main branch.
@@ -101,6 +107,7 @@ ls /var/lib/jenkins/jobs/ansible/builds/1/archive/
 ```
 - Ensure builds start automatically and Jenkins saves the files in: 
 
+<img width="3840" height="2160" alt="Screenshot (34)" src="https://github.com/user-attachments/assets/f1fafdcc-5504-4a26-af84-0da59d9fff28" />
 
 
 # Step 3: Prepare Your Development Environment (VS Code)
@@ -129,6 +136,7 @@ On your local machine (using Git Bash/VSC):
 git checkout -b feature/ansible-setup
 ```
 Reason: Development should occur on a feature branch to isolate changes and allow for code review (Pull Request).
+<img width="3840" height="2160" alt="Screenshot (35)" src="https://github.com/user-attachments/assets/9f9554a5-93b3-441f-bc37-b5ac02a9f3ae" />
 
 # Create project directories
 
@@ -146,6 +154,8 @@ ls
 ```bash
 .git README.md inventory/ playbooks/
 ```
+<img width="3840" height="2160" alt="Screenshot (40)" src="https://github.com/user-attachments/assets/7c1680f7-ad2d-4996-8c3e-8bf529de1438" />
+
 # Create your first playbook file
 - Inside the playbooks folder:
 
@@ -179,6 +189,8 @@ ls
 ```bash
 dev.ini  staging.ini  uat.ini  prod.ini
 ```
+<img width="3840" height="2160" alt="Screenshot (36)" src="https://github.com/user-attachments/assets/87f7868b-192a-4365-9a15-c5d82ea81cd9" />
+
 - Check your work:
 ```bash
 tree
@@ -198,6 +210,7 @@ ansible-config-mgt/
     └── common.yml
 
 - This structure organizes hosts (inventory) and tasks (playbooks), which is essential for scalable Ansible management.    
+<img width="3840" height="2160" alt="Screenshot (37)" src="https://github.com/user-attachments/assets/ea89db9b-0ff9-4934-a8cf-76d3137306ab" />
 
 # Step 4: Configure the Inventory File (Host List) 
 The inventory file tells Ansible which servers to manage and how to connect to them.
@@ -219,6 +232,7 @@ Open the inventory/dev.ini file and add the private IPs of your five servers, en
 10.0.1.127 ansible_ssh_user=ubuntu
 ```
 Reason: This defines the development server group structure and ensures Ansible attempts to log in with the correct OS-specific username.
+<img width="3840" height="2160" alt="Screenshot (39)" src="https://github.com/user-attachments/assets/91b94f3e-a675-4b21-b7bf-de037dd62097" />
 
 # Step 5: Create the Common Playbook 
 The common.yml playbook contains the configuration tasks to be applied to the servers.
@@ -326,6 +340,7 @@ Here is the full common.yml playbook with all the additional tasks included:
 ```
 
 Reason: This playbook defines a set of repeatable, idempotent tasks (install wireshark, create directory, set timezone) that are common across your infrastructure.
+<img width="3840" height="2160" alt="Screenshot (44)" src="https://github.com/user-attachments/assets/7441be14-0509-4a2f-bb3c-f7bd58fdcda6" />
 
 # Step 6: Git Workflow and Jenkins Build 
 This step ensures your code moves from your feature branch to the main branch, triggering a Jenkins build.
@@ -338,10 +353,14 @@ git commit -m "feat: Add initial ansible inventory and common playbook"
 # Push the Feature Branch (Local Machine)
 git push origin feature/ansible-setup
 ```
+<img width="3840" height="2160" alt="Screenshot (45)" src="https://github.com/user-attachments/assets/bbfbd35c-a30a-4056-bb81-66e5f25abb5e" />
+
 # Create and Merge Pull Request (GitHub):
 - On GitHub, create a Pull Request (PR) from feature/ansible-setup to main.
+<img width="3840" height="6918" alt="Comparing-main-feature-ansible-setup-·-dimani001-ansible-config-mgt-10-29-2025_07_30_AM" src="https://github.com/user-attachments/assets/52eabb0e-d8d9-4adc-929d-7026b57aa153" />
 
 - Merge the PR (acting as the reviewer).
+<img width="3840" height="5686" alt="Comparing-main-feature-ansible-setup-·-dimani001-ansible-config-mgt-10-29-2025_07_28_AM" src="https://github.com/user-attachments/assets/ab042ed3-4c60-45e1-baa6-c7bcd877fe6f" />
 
 - pull the Latest Changes On Local Repository:
 ```Bash
@@ -376,6 +395,7 @@ ssh-add <path-to-your-private-key.pem>
 ssh -A ubuntu@<Jenkins-Ansible_Public_IP>
 ```
 Reason: Forwarding the key (-A) allows Ansible on the Jenkins-Ansible server to use your local private key to connect to all other servers without storing the key on the Control Node.
+<img width="3840" height="2160" alt="Screenshot (38)" src="https://github.com/user-attachments/assets/25b70baf-430f-4c12-af4a-ef91b816d15f" />
 
 # Run playbook on development inventory:
 - Run the First Ansible Test
@@ -388,6 +408,9 @@ ansible-playbook -i inventory/dev.ini playbooks/common.yml
 ```
 (Note: Ensure your inventory file is named .ini, not .yml, or Ansible will fail to parse it.)
 
+<img width="3840" height="2160" alt="Screenshot (52)" src="https://github.com/user-attachments/assets/b16d91f5-3bd0-4964-8e5b-da6552b65f1f" />
+<img width="3840" height="2160" alt="Screenshot (55)" src="https://github.com/user-attachments/assets/3cef0b4e-a57e-4447-9b3e-de33cc91c824" />
+<img width="3840" height="2160" alt="Screenshot (56)" src="https://github.com/user-attachments/assets/6df7bd5b-3a7c-4f12-acfa-b50deaf16f6e" />
 
 # Verify tasks on servers:
 
@@ -395,6 +418,20 @@ Verify that wire shark is running in each of the servers by running
 ```bash
       wireshark --version
 ```
+- # NFS SERVER
+<img width="3840" height="2160" alt="Screenshot (57)" src="https://github.com/user-attachments/assets/ea51641a-6559-49de-aa75-cc2086548ac9" />
+
+- # WEB_SERVER 1
+<img width="38<img width="3840" height="2160" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/2fb553c9-180d-4102-9500-88d9618123b6" />
+
+- # DB SERVER
+<img width="3840" height="2160" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/668364d4-45c7-49e8-8ca1-501faa38569b" />
+
+- # WEB_SERVER 2
+<img width="3840" height="2160" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/707916c7-5846-426d-9826-db546da8fa3e" />
+
+- # LB_SERVER
+<img width="3840" height="2160" alt="Screenshot (61)" src="https://github.com/user-attachments/assets/34ac3154-055f-4383-923e-4346a43c68d4" />
 
 
 
