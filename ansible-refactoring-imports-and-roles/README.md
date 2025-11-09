@@ -13,6 +13,7 @@ The foundation requires three EC2 instances and proper network configuration.
 - UAT Web Server 1: RHEL / Amazon Linux 2 (Target for deployment)
 
 - UAT Web Server 2: RHEL / Amazon Linux 2 (Target for deployment)
+<img width="3840" height="2160" alt="Screenshot (104)" src="https://github.com/user-attachments/assets/0602e5fe-0b69-42f7-b7dd-4a265564007f" />
 
 # Re-Establish SSH Agent Forwarding (On Local PC)
 
@@ -41,6 +42,7 @@ This step prevents the "Connection timed out" error for your new UAT servers.
 Go to the AWS Console - Security Groups, find the Security Group attached to Web1-UAT and Web2-UAT. In the Inbound Rules, add a rule:
 Type: SSHSource: 10.0.1.214/32 (The private IP of your Jenkins-Ansible server).
 - Reason: The Control Node (10.0.1.214) must be able to initiate SSH (Port 22) connections to the new UAT servers.
+<img width="3840" height="2160" alt="Screenshot (105)" src="https://github.com/user-attachments/assets/5259f039-69c7-4b22-8039-9543b281bbda" />
 
 3. # Pull Latest Code (On Control Node)
 
@@ -179,6 +181,8 @@ mv playbooks/common.yml static-assignments/common.yml
 cd /home/ubuntu/ansible-config-mgt/
 ansible-playbook -i inventory/dev.ini playbooks/site.yml
 ```
+<img width="3840" height="2160" alt="Screenshot (79)" src="https://github.com/user-attachments/assets/9970eb33-fc0a-4570-b811-6baf10ff59d9" />
+<img width="3840" height="2160" alt="Screenshot (81)" src="https://github.com/user-attachments/assets/9811c2bb-24b1-48de-8fee-4a805264f9e5" />
 
 - Create another playbook `common-del.yml` under `static-assignments` for deleting Wireshark. 
 
@@ -235,12 +239,18 @@ cd /home/ubuntu/ansible-config-mgt/
 git pull origin main
 ansible-playbook -i inventory/dev.ini playbooks/site.yml
 ```
+<img width="3840" height="2160" alt="Screenshot (87)" src="https://github.com/user-attachments/assets/25c6006c-75f7-4c96-87b4-129ee4622c33" />
+<img width="3840" height="2160" alt="Screenshot (88)" src="https://github.com/user-attachments/assets/4c4ca018-0d28-4d73-8176-1a0faceaa067" />
+
+
 
 - Confirm Wireshark was deleted:
 ```bash
 wireshark --version
 # Output: bash: wireshark: command not found
 ```
+<img width="3840" height="2160" alt="Screenshot (89)" src="https://github.com/user-attachments/assets/e91428e8-37d8-4a07-8d66-8ad4e43bb353" />
+<img width="3840" height="2160" alt="Screenshot (90)" src="https://github.com/user-attachments/assets/3e5fdcbf-7c41-4bcc-a034-720441377129" />
 
 # Step 3. Configure UAT Webservers with a Role 'Webserver'
 Overview
@@ -266,6 +276,7 @@ mkdir defaults, handlers, meta, tasks, templates
 ```
 
 - Navigate into each of the created directories and create a `main.yml` file in each directory
+<img width="3840" height="2160" alt="Screenshot (94)" src="https://github.com/user-attachments/assets/43e65abb-1ffe-4d9a-88df-13ffb6d63087" />
 
 2. Update Inventory
 Edit inventory/uat.yml with your UAT server IPs:
@@ -273,6 +284,7 @@ Edit inventory/uat.yml with your UAT server IPs:
 [uat-webservers]
 <Web1-UAT-Private-IP> ansible_ssh_user='ec2-user'
 <Web2-UAT-Private-IP> ansible_ssh_user='ec2-user'
+<img width="3840" height="2160" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/1e7d0da4-23a5-4819-81c8-cf6df45fde0c" />
 
 - Inventory ready for UAT environment.
 
@@ -347,6 +359,7 @@ Make sure to add a reference to this new playbook in site.yml, alongside your ex
                  - import_playbook: ../static-assignments/uat-webservers.yml
 ```
 
+<img width="3840" height="2160" alt="Screenshot (103)" src="https://github.com/user-attachments/assets/e7558870-2447-428d-8b8b-b50926773163" />
 
 # Step 5: Commit & Test
 - Commit your changes to your Git repository.
