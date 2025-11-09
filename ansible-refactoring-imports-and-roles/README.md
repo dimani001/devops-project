@@ -71,8 +71,10 @@ Create a directory on your Jenkins-Ansible server (ec2-instance) to store all ar
 
 - Go to Jenkins web console -> `Manage Jenkins` -> `Manage Plugins`- search for `copy Artifacts` and then install it
 * Plugin: Install the `Copy Artifact` Plugin.
+<img width="3840" height="2160" alt="Screenshot (63)" src="https://github.com/user-attachments/assets/62aa3e84-ca96-4f82-a479-92e37d6bb724" />
 
 - Job Creation: Create a new Freestyle project and call it `save_artifacts`
+<img width="3840" height="2160" alt="Screenshot (64)" src="https://github.com/user-attachments/assets/bf076189-4e72-4e0b-9dab-ce06e8c373a2" />
 
 - Configure this project to be triggered by the completion of the previous ansible project(ansible), to do this ,
 * go to `save_artifacts` project, > `configure` > `general tab` , Click to check the `discard old builds` option, on `strategy` ,set it to *log rotation*, also set the `max number of builds` to ""2"" . this is done in order to keep space on the server
@@ -82,9 +84,11 @@ Create a directory on your Jenkins-Ansible server (ec2-instance) to store all ar
 - Under `build triggers`, select `build after other projects are built` , and under `projects to watch`, input the name of your previous ansible project, in this case : "ansible"
 
 - Set up `build steps` select "copy artifacts from another project" , in the drop down , input the name of the project. as is this case : "ansible". under `which build`, set it to "latest successful build" , and under artifacts to copy , use `**` to select all
+<img width="3840" height="8479" alt="save_artifacts-Config-Jenkins-11-06-2025_07_37_PM" src="https://github.com/user-attachments/assets/08fb9613-c2f1-4abb-ac14-4b540a03d4c4" />
 
 
 - Save the configurations and make changes to your `README.md` file in your github `ansible-config-mgt` repo and ensure the build triggers upon changes made on the file, also confirm the new save artifact job build also triggers from the completion of the ansible build
+<img width="3840" height="2160" alt="Screenshot (69)" src="https://github.com/user-attachments/assets/0a78ba01-f28d-4df6-9dd0-e35d9245d402" />
 
 
 However, while executing this project, The primary ansible job failed because the jenkins user lacked read/write access to the Git repository checked out by the ubuntu user (/home/ubuntu/ansible-config-mgt).
@@ -123,6 +127,8 @@ sudo chmod g+s /home/ubuntu/ansible-config-artifact
 # 5. Restart Jenkins
 sudo systemctl restart jenkins
 ```
+<img width="3840" height="2160" alt="Screenshot (66)" src="https://github.com/user-attachments/assets/5f297556-5ca2-4278-ad31-f5483e8fdcc6" />
+<img width="3840" height="2160" alt="Screenshot (67)" src="https://github.com/user-attachments/assets/bac9335e-c5c5-4d6b-8892-74c709d98707" />
 
 Once you're done with the first step,
 # Step 2 . Refactor Ansible Code by Importing Other Playbooks
@@ -140,6 +146,7 @@ git checkout main
 git pull origin main
 git checkout -b refactor
 ```
+<img width="3840" height="2160" alt="Screenshot (70)" src="https://github.com/user-attachments/assets/c2f2171f-e13d-4f73-8fd1-9dbd4cf82af7" />
 
 - Ceate a site.yml file in the playbooks folder. This will serve as the entry point to all configurations.
 Inside the playbooks directory:
@@ -352,8 +359,13 @@ Run the playbook command
   cd /home/ubuntu/ansible-config-artifact
   ansible-playbook -i inventory/uat.yml playbooks/site.yml
   ```
+<img width="3840" height="2160" alt="Screenshot (96)" src="https://github.com/user-attachments/assets/4aea3d4a-fd28-4752-a5a8-73d0987ae384" />
+<img width="3840" height="2160" alt="Screenshot (97)" src="https://github.com/user-attachments/assets/4367ea24-09b4-4d42-b638-bd35676e45a1" />
 
 Please check that your UAT Web servers are set up correctly. You should be able to visit your servers using any web browser
+
+<img width="3840" height="2160" alt="Screenshot (98)" src="https://github.com/user-attachments/assets/cc6ef791-d1b2-4f18-9f8d-9c551f1f6e5e" />
+<img width="3840" height="2160" alt="Screenshot (99)" src="https://github.com/user-attachments/assets/0665a2a3-19b7-4f1d-afcf-9f1ba8d7c225" />
 
 
 conclusion :
