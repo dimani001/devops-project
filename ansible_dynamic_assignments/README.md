@@ -82,6 +82,7 @@ Repeat for dev.yml, prod.yml, staging.yml with their own settings.
 
 - import_playbook: ../static-assignments/uat-webservers.yml
 - This makes your main playbook dynamic and able to import other playbooks.
+```
 
 ## Step 2: Creating Mysql Database using roles 
 
@@ -120,7 +121,7 @@ mysql_users:
 ```
 - configure your db credentials. P.S: these credentials will be used to connect to our website later on.
 
-3. Create DB playbook
+3. # Create DB playbook
 Create a new playbook inside static-assignments folder and call it db-servers.yml , update it with the created roles. use the code below
 ```bash
 cd ~/ansible-config-mgt/static-assignments
@@ -141,7 +142,7 @@ Return to your general playbook which is the playbooks/site.yml and reference th
 - import_playbook: ../static-assignments/db-servers.yml
 ```
 
-5. Commit and push changes
+5. # Commit and push changes
 ```bash
 git add .
 git commit -m "Add MySQL role and db-servers playbook"
@@ -209,7 +210,7 @@ nano loadbalancers.yml
     - { role: apache, when: enable_apache_lb and load_balancer_is_required }
 ```
 
-- Now , inside your generaal playbook (site.yml) file, dynamically import the load balancer playbook so it can use the roles weve created
+- Now , inside your general playbook (site.yml) file, dynamically import the load balancer playbook so it can use the roles weve created
 ```yaml
   - import_playbook: ../static-assignments/loadbalancers.yml
     when: load_balancer_is_required
@@ -367,6 +368,7 @@ The defaults/main.yml contains all the default Nginx configuration values; uncom
 
 1. Update roles/nginx/defaults/main.yml
 Under nginx_upstream, replace the placeholder IPs with your UAT or webserver IP addresses:
+```
 nginx_upstreams: 
   - name: myapp1
     strategy: "ip_hash"  # alternatives: "least_conn", etc.
@@ -374,12 +376,13 @@ nginx_upstreams:
     servers:
       - "<uat-server2-ip-address> weight=5"
       - "<uat-server1-ip-address> weight=5"
-
+```
 - Replace <uat-server2-ip-address> and <uat-server1-ip-address> with your real server private IPs.
 
 2. Update inventory/uat.yml
 update the inventory/uat.yml to include the neccesary details for ansible to connect to each of these servers to perform all the roles we have specified. use the code below :
 Add all servers so Ansible can connect properly:
+```yaml
 [uat-webservers]
 <server1-ipaddress> ansible_ssh_user=<ec2-username>
 <server2-ipaddress> ansible_ssh_user=<ec2-username>
@@ -389,12 +392,12 @@ Add all servers so Ansible can connect properly:
 
 [db-servers]
 <db-instance-ip> ansible_ssh_user=<ec2-username>
-
+```
 - Replace placeholders with your actual EC2 IP addresses and usernames.
 
 ## Step 5 : Configure your webserver roles to install php and all its dependencies , as well as cloning your tooling website from your github repo
 In the roles/webserver/tasks/main.yml , write the following tasks. use the code below :
-
+```yaml
 ---
 # Step 0: Create swap memory to avoid memory issues
 - name: Create swap file
@@ -559,7 +562,7 @@ In the roles/webserver/tasks/main.yml , write the following tasks. use the code 
   ansible.builtin.file:
     path: /var/www/html/html
     state: absent
-
+```
 The code block above tells ansible to create swap memory to prevent OOM and UAT server crashes, install apache on the webservers , install git, install php and all its dependencies, clone the website from out github repo,as well ascopy the website files into the /var/www/html directory.
 
 - Key thing i added, Using group_vars for LB hosts
@@ -655,6 +658,9 @@ After pulling, you can re-run the playbook to ensure the merged changes are appl
 ansible-playbook -i inventory/uat.yml playbooks/site.yml
 ```
 - This ensures your Ansible server has the latest merged version and all updates are applied cleanly.
+<img width="3840" height="2160" alt="Screenshot (123)" src="https://github.com/user-attachments/assets/e6333a63-8322-4592-b6b9-1232cee13ec7" />
+<img width="3840" height="2160" alt="Screenshot (124)" src="https://github.com/user-attachments/assets/22f7b90a-c3f9-451b-855f-462c7cc9c051" />
+<img width="3840" height="2160" alt="Screenshot (125)" src="https://github.com/user-attachments/assets/0e00f7b6-f438-44a0-95b4-c41dbecc6a21" />
 
 # Additional step : To be able to login to your database from the tooling website uploaded,
 - Login to the uat-webservers , update the functions.php in the /var/www/html directory, input the credentials we specified in the mysql roles, in our case, admin, admin, use the mysql db server private ip as host name. save and exit.
@@ -667,7 +673,11 @@ import the tooling-db.sql file into the database. ( check previous projects for 
 - visit your uat servers ip address and attempt to login. use same password and username we inputed into the db table.
 As well visit yor load balncer and ensure you can login as well
 Output:
+<img width="3840" height="2160" alt="Screenshot (126)" src="https://github.com/user-attachments/assets/6807c087-1979-4086-8b30-5b1ecf9e204a" />
+<img width="3840" height="2160" alt="Screenshot (127)" src="https://github.com/user-attachments/assets/d098c14e-5852-4707-861a-f27f9a5472cb" />
 
+<img width="3840" height="2160" alt="Screenshot (128)" src="https://github.com/user-attachments/assets/c6b9222e-6d47-4760-8229-666245598e1a" />
+<img width="3840" height="2160" alt="Screenshot (129)" src="https://github.com/user-attachments/assets/4f9ffd93-cb0c-4180-be34-0d7c05527492" />
 
 
 
