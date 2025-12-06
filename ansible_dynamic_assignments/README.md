@@ -28,6 +28,8 @@ ansible-config-mgt/
 │      ├─ prod.yml
 │      └─ uat.yml
 ```
+<img width="3840" height="2160" alt="Screenshot (131)" src="https://github.com/user-attachments/assets/05364a93-c656-46b5-a525-79645380413d" />
+
 
 ```bash
 mkdir -p dynamic-assignments/env-vars
@@ -135,6 +137,7 @@ nano db-servers.yml
   roles:
     - role: mysql
 ```
+<img width="3840" height="2160" alt="Screenshot (122)" src="https://github.com/user-attachments/assets/0f65f1c7-1b1a-4a69-a446-2db865ce2939" />
 
 4.  Reference DB playbook in site.yml
 Return to your general playbook which is the playbooks/site.yml and reference the newly created db-servers playbook, add the code below to import it into the main playbook
@@ -356,6 +359,7 @@ nginx_upstream:
     servers:
       - "127.0.0.1:8080"
 ```
+<img width="3840" height="2160" alt="Screenshot (135)" src="https://github.com/user-attachments/assets/933bf1c0-cda4-421f-8b6c-0072889abf0c" />
 
 - Notes / Best Practices:
 i. Do not delete existing content unless instructed; just add these sections to the correct files.
@@ -394,6 +398,7 @@ Add all servers so Ansible can connect properly:
 <db-instance-ip> ansible_ssh_user=<ec2-username>
 ```
 - Replace placeholders with your actual EC2 IP addresses and usernames.
+<img width="3840" height="2160" alt="Screenshot (138)" src="https://github.com/user-attachments/assets/457187b4-d29b-4225-9049-80eabe27444f" />
 
 ## Step 5 : Configure your webserver roles to install php and all its dependencies , as well as cloning your tooling website from your github repo
 In the roles/webserver/tasks/main.yml , write the following tasks. use the code below :
@@ -579,6 +584,7 @@ enable_apache_lb: false
 enable_nginx_lb: true
 ```
 - This ensures that all hosts in the lb group automatically have these variables, without needing to include them manually in the playbook.
+<img width="3840" height="2160" alt="Screenshot (130)" src="https://github.com/user-attachments/assets/cd701d6f-1752-46d3-8da0-3019914bb382" />
 
 - Update your site.yml
 You no longer need to include_vars just for the load balancer; it’s handled by group_vars. A clean version of site.yml:
@@ -600,7 +606,7 @@ You no longer need to include_vars just for the load balancer; it’s handled by
 ```
 - load_balancer_is_required is now defined via group_vars/lb.yml, so the conditional will work correctly.
 
-
+<img width="3840" height="2160" alt="Screenshot (132)" src="https://github.com/user-attachments/assets/e34987dc-5e6c-4a67-85ef-d8825922e9f4" />
 
 # Step 3: Clean up loadbalancers.yml
 Make sure the playbook for load balancers looks like this:
@@ -614,8 +620,7 @@ Make sure the playbook for load balancers looks like this:
     - { role: apache, when: enable_apache_lb and load_balancer_is_required }
 ```
 Do not redefine the variable here. It will pick up automatically from group_vars/lb.yml.
-
-
+<img width="3840" height="2160" alt="Screenshot (133)" src="https://github.com/user-attachments/assets/9362b8f2-b4d8-439c-8275-3ca5b6eba250" />
 
 # Step 4: Check variables
 Run this to confirm:
@@ -635,6 +640,7 @@ You should see them correctly defined:
 - group_vars is automatically loaded for all hosts in that group.
 - No need for include_vars in the playbook for LB hosts.
 - The when condition in loadbalancers.yml can safely reference these variables.
+<img width="3840" height="2160" alt="Screenshot (137)" src="https://github.com/user-attachments/assets/86e2437b-90aa-4b3e-8d82-13cd24810734" />
 
 
 # Push your branch to GitHub (if not already done):
